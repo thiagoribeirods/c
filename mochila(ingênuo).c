@@ -14,7 +14,6 @@ void msg()
 {
   printf("\t\t\t Problema da Mochila\n");
 }
-
 //ordena pelo peso
 void orderByWeight(int * objectsWeight, int * objectsValues)
 {
@@ -36,7 +35,6 @@ void orderByWeight(int * objectsWeight, int * objectsValues)
     }
   }
 }
-
 int buildBag(int capacity, int sumWeights, int * objectWeight, int * objectValue)
 {
   sumWeights = 0;
@@ -47,7 +45,6 @@ int buildBag(int capacity, int sumWeights, int * objectWeight, int * objectValue
     {
       if(objectWeight[i] <= j) //valor = max(valor excluindo novo peso, valor inclundo novo peso)
       {
-
         if(i == 0)
         {
           parcialValue = MAX(0, objectValue[i] + 0);
@@ -58,11 +55,9 @@ int buildBag(int capacity, int sumWeights, int * objectWeight, int * objectValue
           parcialValue = MAX(table[i-1][j], objectValue[i] + table[i-1][j-objectWeight[i]]);
           table[i][j] = parcialValue;
         }
-        
       }
       else //copie o valor da célula acima
       {
-
         if(j == 0)
         {
           table[i][j] = 0;
@@ -71,33 +66,25 @@ int buildBag(int capacity, int sumWeights, int * objectWeight, int * objectValue
         {
           table[i][j] = table[i-1][j];
         }
-
       }      
     }
   }
   return 0;
 }
-
 int main(void) {
   msg();
   objectWeight[0] = 1; //a peso
   objectValue[0] = 1; //a valor
-
   objectWeight[1] = 3; //b peso
   objectValue[1] = 4; //b valor
-
   objectWeight[2] = 4; //c peso
   objectValue[2] = 5; //c valor
-
   objectWeight[3] = 5; //d peso
   objectValue[3] = 7; //d valor
-
   objectWeight[4] = 2; //e peso
   objectValue[4] = 4; //e valor
-
   orderByWeight(objectWeight, objectValue);
   buildBag(9, 0, objectWeight, objectValue);
-
   for(int i = 0; i < 5; i++)
   {
     printf("|  ");
@@ -109,12 +96,9 @@ int main(void) {
         printf("%i  ", table[i][j]);
       printf("|  ");
     }
-
     printf("\n");
   }
-
   printf("\n\tConclusão");
   printf("\nO máximo valor possível é -> ");
-
   return 0;
 }
