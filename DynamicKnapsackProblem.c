@@ -1,22 +1,42 @@
 /* Edivan Amorim - 41882091 | Paolo Filipi - 41880171 | Thiago Ribeiro - 41891147 */
 #include <stdio.h>
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
-//Mochila
-int capacity = 9;
-//objetos
-int objectWeight[6] = {0, 0, 0, 0, 0};
-int objectValue[6] = {0,0,0,0,0};
-//valor máximo
-int value = 0;
-int sumWeights = 0;
-//tabela
-int table[6][10];
+#define lengthMax 6
+#define capacityMax 10
+
+/* Variáveis */
+  int capacity = capacityMax; //capacidade da mochila
+  int numberObjects = 0; //quantidade de objetos
+  int objectWeight[lengthMax]; //peso dos objetos 
+  int objectValue[lengthMax]; //valor dos objetos
+  int value = 0; //valor máximo
+  int sumWeights = 0; //soma dos pesos
+  int table[lengthMax][capacityMax]; //tabela
+
 void msg()
 {
   printf("\t\t\t Problema da Mochila\n");
+  printf("\n\t A capacidade da mochila foi definida como %i" , capacityMax);
+  printf("\n\t O número de objetos foi definido como %i", lengthMax);
 }
-
-//ordena pelo peso
+/*Função que imprime matriz*/
+void print()
+{
+  for(int i = 1; i < lengthMax; i++)
+  {
+    printf("|  ");
+    for(int j = 0; j < 10; j++)
+    {
+      if(table[i][j] < 10)
+        printf("%i   ", table[i][j]);
+      else
+        printf("%i  ", table[i][j]);
+      printf("|  ");
+    }
+    printf("\n");
+  }
+}
+/*ordena pelo peso */
 void orderByWeight(int * objectsWeight, int * objectsValues)
 {
   int aux = 0;
@@ -29,7 +49,6 @@ void orderByWeight(int * objectsWeight, int * objectsValues)
         aux = objectsWeight[i];
         objectsWeight[i] = objectsWeight[j];
         objectsWeight[j] = aux;
-        aux = 0;
         aux = objectsValues[i];
         objectsValues[i] = objectsValues[j];
         objectsValues[j] = aux;  
@@ -38,71 +57,63 @@ void orderByWeight(int * objectsWeight, int * objectsValues)
   }
 }
 
-int buildBag(int sumWeights, int capacity, int * objectWeight, int * objectValue, int parcialValue, int object)
+/*constroi tabela*/
+int buildBag(int sumWeights, 
+             int capacity, 
+             int * objectWeight, 
+             int * objectValue, 
+             int parcialValue, 
+             int object,
+             int numberObject)
 {
-  if(object > 5)
+  if(object > numberObject) //condição de parada
   {
     return 1;
   }
-
-  if(sumWeights == 0)
+  if(sumWeights == 0) //condição para zerar a primeira coluna
   {
     table[object][sumWeights] = 0;
-    return buildBag(sumWeights + 1, capacity, objectWeight, objectValue, parcialValue, object);
+    return buildBag(sumWeights + 1, capacity, objectWeight, objectValue, parcialValue, object, numberObject);
   }
-  else if(sumWeights < capacity)
+  else if(sumWeights < capacity) //condição para continuar realizando a operação
   {
-
-    if(objectWeight[object] <= sumWeights)
+    if(objectWeight[object] <= sumWeights) // se o pesso do item for menor ou igual que a soma dos pesos
     {
-      parcialValue = MAX(table[object - 1][sumWeights], objectValue[object] + table[object - 1][sumWeights - objectWeight[object]]);
+      parcialValue = MAX(table[object-1][sumWeights], objectValue[object] + table[object-1][sumWeights - objectWeight[object]]); 
       table[object][sumWeights] = parcialValue;
     } 
-    else
+    else //caso seja maior
     {
-      table[object][sumWeights] = table[object - 1] [sumWeights];
+      table[object][sumWeights] = table[object-1] [sumWeights];
     }
-    return buildBag(sumWeights + 1, capacity, objectWeight, objectValue, parcialValue, object);
+    return buildBag(sumWeights + 1, capacity, objectWeight, objectValue, parcialValue, object, numberObject); //chama a função até a capacidade atingit o máximo
     }
-  else
+  else //depois, zera a soma dos pesos e vai para o segundo objeto
   {
-    return buildBag(0, capacity, objectWeight, objectValue, parcialValue, object + 1);
+    return buildBag(0, capacity, objectWeight, objectValue, parcialValue, object + 1, numberObject);
   }
 }
 
 int main(void) {
   msg();
-  objectWeight[1] = 1; //a peso
-  objectValue[1] = 1; //a valor
-
-  objectWeight[2] = 3; //b peso
-  objectValue[2] = 4; //b valor
-
-  objectWeight[3] = 4; //c peso
-  objectValue[3] = 5; //c valor
-
-  objectWeight[4] = 5; //d peso
-  objectValue[4] = 7; //d valor
-
-  objectWeight[5] = 2; //e peso
-  objectValue[5] = 4; //e valor
-
-  orderByWeight(objectWeight, objectValue);
-  buildBag(0, 9 + 1, objectWeight, objectValue, 0, 1);
-
-  for(int i = 0; i < 6; i++)
+  int aux = 0; 
+  /*preenche o vetor de peso e o vetor de objeto*/
+  for(int i = 1; i < lengthMax; i++)
   {
-    printf("|  ");
-    for(int j = 0; j < 10; j++)
-    {
-      if(table[i][j] < 10)
-        printf("%i   ", table[i][j]);
-      else
-        printf("%i  ", table[i][j]);
-      printf("|  ");
-    }
-
-    printf("\n");
+    printf("\n-> Objeto %i", i);
+    printf("\n Peso   -> ");
+    scanf("%i", &aux);
+    objectWeight[i] = aux;
+    aux = 0;
+    printf(" Valor  -> ");
+    scanf("%i", &aux);
+    objectValue[i] = aux;
+    aux = 0;
   }
+  orderByWeight(objectWeight, objectValue);
+  buildBag(0, capacity + 1, objectWeight, objectValue, 0, 1, lengthMax-1);
+  print();
+  printf("\n\tConclusão");
+  printf("\nO máximo valor possível é -> %i", table[lengthMax-1][capacityMax-1]);
   return 0;
 }
