@@ -14,8 +14,8 @@
 void msg()
 {
   printf("\t\t\t Problema da Mochila\n");
-  printf("\n\t A capacidade da mochila foi definida como %i" , capacityMax);
-  printf("\n\t O número de objetos foi definido como %i", lengthMax);
+  printf("\n\t A capacidade da mochila foi definida como %i" , capacityMax - 1);
+  printf("\n\t O número de objetos foi definido como %i", lengthMax - 1);
 }
 /*Função que imprime matriz*/
 void print()
