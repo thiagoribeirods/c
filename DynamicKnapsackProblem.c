@@ -3,7 +3,6 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define lengthMax 6
 #define capacityMax 10
-
 /* Variáveis */
   int capacity = capacityMax; //capacidade da mochila
   int numberObjects = 0; //quantidade de objetos
@@ -12,7 +11,6 @@
   int value = 0; //valor máximo
   int sumWeights = 0; //soma dos pesos
   int table[lengthMax][capacityMax]; //tabela
-
 void msg()
 {
   printf("\t\t\t Problema da Mochila\n");
@@ -56,7 +54,6 @@ void orderByWeight(int * objectsWeight, int * objectsValues)
     }
   }
 }
-
 /*constroi tabela*/
 int buildBag(int sumWeights, 
              int capacity, 
@@ -93,7 +90,6 @@ int buildBag(int sumWeights,
     return buildBag(0, capacity, objectWeight, objectValue, parcialValue, object + 1, numberObject);
   }
 }
-
 int main(void) {
   msg();
   int aux = 0; 
